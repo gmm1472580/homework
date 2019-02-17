@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.UserMapper">
+    <!--查询所有-->
+    <select id="findAll" resultType="user" parameterType="param">
+        select * from user
+        <where>
+            <if test="name !=null and ! ''.equals(name)">
+                and name like '%${name}%'
+            </if>
+            <if test="address !=null and ! ''.equals(address)">
+                and name like '%${address}%'
+            </if>
+            <if test="email !=null and ! ''.equals(email)">
+                and name like '%${email}%'
+            </if>
+        </where>
+        limit #{start},#{rows}
+    </select>
+    <!--根据用户名和密码查询-->
+    <select id="findByUsernameAndPassword" resultType="user" parameterType="user">
+        select * from user where username=#{username} and password=#{password}
+    </select>
+    <!--添加-->
+    <insert id="addUser" parameterType="user">
+        insert into user (name,gender,age,address,qq,email) values (#{name},#{gender}, #{age},#{address},#{qq},#{email})
+    </insert>
+    <!--删除-->
+    <delete id="deleteUserById" parameterType="int">
+        delete from user where id = #{id}
+    </delete>
+    <!--根据id查询-->
+    <select id="findById" parameterType="int" resultType="user">
+        select * from user where id=#{id}
+    </select>
+    <!--修改-->
+    <update id="updateById" parameterType="user">
+        update user set gender=#{gender},age=#{age},address=#{address},qq=#{qq},email=#{email} where id=#{id}
+    </update>
+    <!--查询总记录数-->
+    <select id="findTotalCount" resultType="int" parameterType="param">
+        select count(*) from user 
+        <where>
+            <if test="name !=null and name != ''">
+                and name like '%${name}%'
+            </if>
+            <if test="address !=null and address != ''">
+                and name like '%${address}%'
+            </if>
+            <if test="email !=null and email != ''">
+                and name like '%${email}%'
+            </if>
+        </where>
+    </select>
+
+</mapper>
